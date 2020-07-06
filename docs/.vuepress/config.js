@@ -1,9 +1,9 @@
 const dayjs = require('dayjs');
 
 module.exports = {
-  title: 'HelloWorld',
+  title: 'E2E Test Handson',
   themeConfig: {
-    domain: 'https://xxx.ozaki25.now.sh',
+    domain: 'https://e2e-test-handson.ozaki25.vercel.app',
     sidebar: [
       {
         title: 'TOP',
