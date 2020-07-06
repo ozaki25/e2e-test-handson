@@ -11,7 +11,7 @@
     "@vuepress/plugin-back-to-top": "^1.5.2",
     "@vuepress/plugin-medium-zoom": "^1.5.2",
     "@vuepress/plugin-pwa": "^1.5.2",
-    "dayjs": "^1.8.28",
+    "dayjs": "^1.8.29",
     "vuepress": "^1.5.2",
     "vuepress-plugin-seo": "^0.1.3"
   }
