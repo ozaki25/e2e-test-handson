@@ -4,6 +4,9 @@ module.exports = {
   title: 'E2E Test Handson',
   themeConfig: {
     domain: 'https://e2e-test-handson.ozaki25.vercel.app',
+    repo: 'ozaki25/e2e-test-handson',
+    repoLabel: 'GitHub',
+    smoothScroll: true,
     sidebar: [
       {
         title: 'TOP',
