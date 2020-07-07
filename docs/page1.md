@@ -76,13 +76,14 @@ node index.js
 - 前の節の復習です
 - Googleにアクセスするように`index.js`を修正してみましょう
 
-```js{7}
+```js{7-8}
 const puppeteer = require('puppeteer');
 
 (async () => {
   const browser = await puppeteer.launch({ headless: false, slowMo: 300 });
   const page = await browser.newPage();
 
+  // Googleにアクセス
   await page.goto('https://google.com');
 
   await browser.close();
