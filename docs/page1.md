@@ -69,7 +69,7 @@ node index.js
 ## 1-4.Puppeteerでページを操作してみよう
 
 - ページを表示することができるようになったので次はページを操作してみます
-- [http://google.com/](http://google.com/)にアクセスして`puppeteer`を検索して[Puppeteerの公式サイト](https://pptr.dev/)にアクセスしてみます
+- [http://google.com/](http://google.com/)にアクセスして`puppeteer`を検索して[Puppeteerのリポジトリ](https://github.com/puppeteer/puppeteer)にアクセスしてみます
 
 ### Googleにアクセスする
 
@@ -129,7 +129,7 @@ const puppeteer = require('puppeteer');
 
 ### ボタンをクリックする
 
-- 検索ワードの入力ができたので`Google検索`ボタンを押して検索させてみます
+- 検索ワードの入力ができたので`Google 検索`ボタンを押して検索させてみます
 - クリックは`page.click()`使います
 - `index.js`を修正しましょう
 
@@ -149,17 +149,17 @@ const puppeteer = require('puppeteer');
 })();
 ```
 
-- `Google検索`ボタンはinputタグでname属性がbtnKなのでそれを利用してボタンを特定しています
+- `Google 検索`ボタンはinputタグでname属性がbtnKなのでそれを利用してボタンを特定しています
 - `node index.js`を実行するとボタンのクリックまで動作すると思います
 
 ### ページの表示を確認
 
 - clickだけではボタンを押すだけで終わってしまいます
 - 検索結果の画面が表示されるまで待つようにしてみましょう
-- `page.waitForSelector()`を使うと指定した要素が画面上に表示されるまで待つようになります
+- `page.waitForNavigation()`を使うと遷移が完了するまで待つようになります
 - `index.js`を修正しましょう
 
-```js{10-11}
+```js{10-14}
 const puppeteer = require('puppeteer');
 
 (async () => {
@@ -168,9 +168,12 @@ const puppeteer = require('puppeteer');
 
   await page.goto('https://google.com');
   await page.type('input[name="q"]', 'puppeteer');
-  await page.click('input[name="btnK"]');
-  // id=searchの要素が画面に出るまで待つ
-  await page.waitForSelector('#search');
+
+  await Promise.all([
+    page.click('input[name="btnK"]'),
+    // 遷移が完了するまで待つ
+    page.waitForNavigation(),
+  ]);
 
   await browser.close();
 })();
@@ -180,10 +183,10 @@ const puppeteer = require('puppeteer');
 
 ### 検索結果から公式サイトにアクセス
 
-- 最後にこれまでのやり方を活用して検索結果からPuppeteerの公式サイトにアクセスします
+- 最後にこれまでのやり方を活用して検索結果からPuppeteerのリポジトリにアクセスします
 - `index.js`を修正しましょう
 
-```js{11-14}
+```js{14-19}
 const puppeteer = require('puppeteer');
 
 (async () => {
@@ -192,18 +195,23 @@ const puppeteer = require('puppeteer');
 
   await page.goto('https://google.com');
   await page.type('input[name="q"]', 'puppeteer');
-  await page.click('input[name="btnK"]');
-  await page.waitForSelector('#search');
-  // href属性がhttps://pptr.dev/のaタグをクリック
-  await page.click('a[href="https://pptr.dev/"]');
-  // content-boxタグが表示されるまで待つ
-  await page.waitForSelector('content-box');
+  await Promise.all([
+    page.click('input[name="btnK"]'),
+    page.waitForNavigation(),
+  ]);
+
+  await Promise.all([
+    // href属性が https://github.com/puppeteer/puppeteer のaタグをクリック
+    page.click('a[href="https://github.com/puppeteer/puppeteer"]'),
+    // 遷移が完了するまで待つ
+    page.waitForNavigation(),
+  ]);
 
   await browser.close();
 })();
 ```
 
-- 検索結果画面からPuppeteerの公式サイトのリンクをクリックしてページが表示されるまで待つようにしてみました
+- 検索結果画面からPuppeteerのリポジトリのリンクをクリックしてページが表示されるまで待つようにしてみました
 - `node index.js`で実行すると以下のような動作になっているはずです
 
 ![demo](/images/1-3.gif)
@@ -213,7 +221,7 @@ const puppeteer = require('puppeteer');
 - 各動作ごとにスクリーンショットを保存するようにしてみます
 - `index.js`を修正しましょう
 
-```js{8,11,15,19}
+```js{8,11,17,23}
 const puppeteer = require('puppeteer');
 
 (async () => {
@@ -226,12 +234,16 @@ const puppeteer = require('puppeteer');
   await page.type('input[name="q"]', 'puppeteer');
   await page.screenshot({ path: '2.png', fullPage: true });
 
-  await page.click('input[name="btnK"]');
-  await page.waitForSelector('#search');
+  await Promise.all([
+    page.click('input[name="btnK"]'),
+    page.waitForNavigation(),
+  ]);
   await page.screenshot({ path: '3.png', fullPage: true });
 
-  await page.click('a[href="https://pptr.dev/"]');
-  await page.waitForSelector('content-box');
+  await Promise.all([
+    page.click('a[href="https://github.com/puppeteer/puppeteer"]'),
+    page.waitForNavigation(),
+  ]);
   await page.screenshot({ path: '4.png', fullPage: true });
 
   await browser.close();
@@ -248,6 +260,6 @@ const puppeteer = require('puppeteer');
 - 文字の入力やボタンのクリックといった操作も実行できました
 - 任意のタイミングでスクリーンショットを保存することができました
 
-## 1-6.その他
+## 1-6.参考情報
 
 - ここで紹介した以外にもいろいなことができるので[公式サイト](https://pptr.dev/)や[公式が提供するサンプル](https://try-puppeteer.appspot.com/)を参考にしてみてください
