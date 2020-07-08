@@ -15,7 +15,7 @@
 - Jestをインストールします
 
 ```sh
-yarn add -D jest
+yarn add jest
 ```
 
 ### テストの作成
@@ -114,4 +114,152 @@ describe('calcのテスト', () => {
 });
 ```
 
-## Topic3
+## 2-3.JestでPuppeteerをテストしてみよう
+
+- 1章で学んだPuppeteerを使った自動画面操作とJestを組み合わせてテストしてみます
+
+### ライブラリのセットアップ
+
+- JestとPuppeteerを共存させるためのライブラリをインストールします
+
+```sh
+yarn add jest-puppeteer
+```
+
+- Jestの設定ファイルを作成します
+- `jest.config.js`を作成して以下の内容を記述してください
+
+```js
+module.exports = {
+  preset: 'jest-puppeteer',
+  verbose: true,
+};
+```
+
+### テストの作成
+
+- まずは[https://example.com](https://example.com)にアクセスする処理だけ書いてみましょう
+- `example.test.js`を作成して以下の内容を記述してください
+
+```js
+describe('example', () => {
+  beforeAll(async () => {
+    await page.goto('https://example.com');
+  });
+
+  test('example.comにアクセスできること', async () => {
+    const result = await page.title(); // ページのタイトルを取得
+    const expected = 'Example Domain';
+    expect(result).toBe(expected);
+  });
+});
+```
+
+### テストの起動
+
+- 以下のコマンドでJestを起動するとPuppeteerのテストも実行されます
+
+```sh
+npx jest
+```
+
+- expectedの値を変更した場合にテストが落ちることも確認してみましょう
+
+::: tip
+- headlessで動作するためブラウザは立ち上がりません
+- ブラウザを立ち上げたい場合は`jest-puppeteer.config.js`を作成して以下の内容を記述してください
+
+```js
+module.exports = {
+  launch: {
+    headless: false,
+    slowMo: 300,
+  },
+};
+```
+:::
+
+## 2-4.Google検索のテストを書いてみよう
+
+- 1章で作成したGoogleでpuppeteerを検索してリポジトリに辿り着くまでに動作をテストしてみます
+
+### テストの作成
+
+- `google.test.js`を作成します
+
+```js
+describe('Googleでpuppeteerを検索してリポジトリにアクセスする', () => {
+  beforeAll(async () => {
+    // デフォルトのタイムアウトが5000msなので長めに設定し直す
+    jest.setTimeout(30000);
+  });
+
+  test('Googleにアクセス', async () => {
+    await page.goto('https://google.com');
+    await page.screenshot({ path: '1.png', fullPage: true });
+  });
+
+  test('検索ワードを入力', async () => {
+    await expect(page).toFill('input[name="q"]', 'puppeteer');
+    await page.screenshot({ path: '2.png', fullPage: true });
+  });
+
+  test('検索ボタンを押して結果表示', async () => {
+    await Promise.all([
+      expect(page).toClick('input[name="btnK"]'),
+      page.waitForNavigation(),
+    ]);
+    // id=searchの要素が画面にあることをチェック
+    await expect(page).toMatchElement('#search');
+    // id=result-statsの要素に`約 6,480,000 件`と表示されていることをチェック(件数はテストが通るように書き換えてください)
+    await expect(page).toMatchElement('#result-stats', { text: '約 6,480,000 件' });
+    await page.screenshot({ path: '3.png', fullPage: true });
+  });
+
+  test('Puppeteerのリポジトリを選択して遷移', async () => {
+    await Promise.all([
+      expect(page).toClick('a[href="https://github.com/puppeteer/puppeteer"]'),
+      page.waitForNavigation(),
+    ]);
+    // `puppeteer/puppeteer`という文字列が画面上にあることをチェック
+    await expect(page).toMatch('puppeteer/puppeteer');
+    await page.screenshot({ path: '4.png', fullPage: true });
+  });
+});
+```
+
+- ほとんどが1章の流用ですが一部書き換えています
+- `expect(page).toFill()`や`expect(page).toClick()`はjest-puppeteerが提供するassertion関数です
+    - [https://github.com/smooth-code/jest-puppeteer/blob/master/packages/expect-puppeteer/README.md#api](https://github.com/smooth-code/jest-puppeteer/blob/master/packages/expect-puppeteer/README.md#api)
+    - これらを使うと入力域やクリック対象のボタンが存在しなかった場合にテスト失敗としてくれます
+- ※一つの`test()`にすべて書いてしまっても良さそうですが結果が見やすいので今回は分けてみました
+- 以下のコマンドで実行します
+
+```sh
+npx jest google.test.js
+```
+
+::: tip
+- `npx jest ファイル名`とファイル名を指定すると特定のファイルだけ実行することができます
+:::
+
+- うまくいくと以下のように出力されスクリーンショットも保存されているはずです
+
+![jest puppeteer result success](/images/2-4.png)
+
+- 表示内容が変わった時にテストが落ちる様子も見てみましょう
+- `google.test.js`の25行目の検索結果件数を書き換えてテストを落としてみます
+
+```js
+    // テストが落ちるようにわざと件数を変えてみる
+    await expect(page).toMatchElement('#result-stats', { text: '約 999,999,999 件' });
+```
+
+- キャプチャのように表示内容と異なる部分でちゃんとテストが落ちました
+
+![jest puppeteer result failed](/images/2-5.png)
+
+## 2-5.まとめ
+
+- Jestを使うことでJavaScriptのテストを実行することができました
+- jest-puppeteerを使うとPuppeteerの自動操作と組み合わせてテストすることができました
