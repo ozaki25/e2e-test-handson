@@ -3,7 +3,9 @@
 ## 2-1.Jestとは
 
 - JavaScriptのテストライブラリ
-    - Javaで言うところのJUnitのようなもの
+- facebookが開発している
+- 類似のライブラリが他にもあるが今最も勢いがある
+    - [https://2019.stateofjs.com/testing/](https://2019.stateofjs.com/testing/)
 - [https://jestjs.io/ja/](https://jestjs.io/ja/)
 
 ## 2-2.ゴール
