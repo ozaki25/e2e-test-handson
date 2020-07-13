@@ -1,3 +1,6 @@
-# Index
+# E2Eテストハンズオン
 
-![logo](/images/logo.png)
+## 内容
+
+- 今回のテーマは画面を自動打鍵してテストするE2Eテストです
+- PuppteerをはじめとしてJestやRegSuitといったJavaScriptで実装するテストライブラリの使い方を学んでもらいます
