@@ -112,7 +112,7 @@ reg-suit init --use-yarn
 ![regsuit init 1](/images/3-1.png)
 
 - 次の質問もデフォルトのままエンターを押します
-    - 設定ファイルの配置フォルダを`.reg`に設定している
+    - 設定ファイルの配置フォルダを`.reg`に設定しています
 
 ![regsuit init 2](/images/3-2.png)
 
@@ -183,7 +183,7 @@ reg-suit init --use-yarn
 
 ## 3-5.GitHub Actionの設定
 
-- 今回はGitHub上でプルリクエストを出した時に自動でRegSuitを実行して結果を表示するようにしてみます
+- 今回はGitHub上でPushした時に自動でRegSuitを実行して結果をプルリクエストに表示するようにしてみます
     - 自動実行にはGitHub ActionsというCIサービスを使います
 - GitHub Actionsの設定ファイルを作成します
     - `.github/workflows`フォルダを作成してその中に`deploy.yml`を作成してください
@@ -263,7 +263,7 @@ git commit -m "reg suit"
 git push origin master
 ```
 
-- GitHubのリポジトリのページを開いてGitHub Actionsによってテストが実行されたことを確認してみましょう
+- Pushをトリガーにテストが実行されるよう設定したので、GitHubのリポジトリのページを開いてテストが実行されたことを確認してみましょう
 - リポジトリのページを開いて`Actions`タブから最新の実行結果を選択しましょう
 
 ![github actions](/images/3-20.png)
@@ -273,8 +273,8 @@ git push origin master
 
 ![github actions](/images/3-21.png)
 
-- 続いてdevブランチを作成してキャプチャに差分を作り出してテストを落としてみましょう
-    - 本来であればテスト対象のページを書き換えたい所ですが、今回サンプルで使っているGoogleのページを修正する訳にもいかないのでテストコードを変えることで差分を生み出します
+- 続いてdevブランチを作成してスクリーンショットに差分を作り出してテストを落としてみましょう
+    - 本来であればテスト対象のページを書き換えたい所ですが、今回サンプルで使っているGoogleのページを改修する訳にもいかないのでテストコードを変えることで差分を生み出します
 - まずはdevブランチを作成します
 
 ```sh
@@ -314,7 +314,7 @@ git push origin dev
 ![pull request](/images/3-24.png)
 
 - 実行が完了するとRegSuitのボットが結果を投稿してくれます
-    - 赤丸3つと青丸1つは、キャプチャ4枚のうち3枚が差分あり1枚が差分なしであることを表現している
+    - 赤丸3つと青丸1つは、キャプチャ4枚のうち3枚が差分あり1枚が差分なしであることを表現しています
 - `this report`をクリックすると実行結果の詳細が閲覧できます
 
 ![pull request](/images/3-25.png)
@@ -338,3 +338,8 @@ git push origin dev
 - RegSuitを使うと画像の差分チェックをテストすることができました
 - 前章までに学んだPuppeteerと組み合わせることでスクリーンショットの差分テストが実現できます
 - GitHub ActionsなどのCIと組み合わせることでより強力に機能します
+
+## 3-8.参考情報
+
+- [React](https://ja.reactjs.org/)や[Vue](https://jp.vuejs.org/index.html)といったSPAライブラリを使う場合は[Storybook](https://storybook.js.org/)と組み合わせてRegSuitを使うケースが多いです
+    - Storybookを使うことでコンポーネント単位でスクリーンショットを撮影してテストします
