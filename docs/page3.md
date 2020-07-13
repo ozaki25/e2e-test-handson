@@ -7,10 +7,16 @@
 - 画面のスクリーンショットを撮影し改修前後で差分があるかどうかテストするといった用途で使われます
     - 差分があった場合はその差分が意図したものかチェックし問題なければパスさせます
 - 差分のチェック機能が多様なのが特徴です
-    - 公式のサンプル
-    - [https://reg-publish-bucket-2c260973-434b-4cc9-8e17-a14e72fd062c.s3.amazonaws.com/2e580ac6f2e686dd97dd4d9d60347a47e03003e2/index.html](https://reg-publish-bucket-2c260973-434b-4cc9-8e17-a14e72fd062c.s3.amazonaws.com/2e580ac6f2e686dd97dd4d9d60347a47e03003e2/index.html)
+    - [公式のサンプル](https://reg-publish-bucket-2c260973-434b-4cc9-8e17-a14e72fd062c.s3.amazonaws.com/2e580ac6f2e686dd97dd4d9d60347a47e03003e2/index.html)
 
-## 3-2.事前準備
+![compare](/images/3-29.png)
+
+## 3-2.ゴール
+
+- RegSuitを使ってスクリーンショットの差分比較テストができること
+- GitHubと組み合わせて自動でテストが回るようにできること
+
+## 3-3.事前準備
 
 ### Github
 
@@ -33,7 +39,7 @@
 #### コードのアップロード
 
 - `.gitignore`というファイルを作成して以下の内容を記述します
-    - ライブラリが入っている`node_modules`はgit管理の対象外とするように設定します
+    - ライブラリが入っている`node_modules`はgit管理の対象外とするように設定しています
 
 ```
 node_modules
@@ -68,6 +74,7 @@ git push origin master
 #### アクセスキーの設定
 
 - アクセスキーが発行できたら以下のコマンドでキーを設定します
+    - windowsの場合は`export`を`set`に置き換えて実行してください
 
 ```sh
 export AWS_ACCESS_KEY_ID=アクセスキーID
@@ -78,7 +85,7 @@ export AWS_SECRET_ACCESS_KEY=シークレットアクセスキー
 - このコマンドはターミナルを閉じるとリセットされてしまうので、ターミナルを開き直した場合は再度実行してください
 :::
 
-## 3-3.RegSuitの導入
+## 3-4.RegSuitの導入
 
 ### ライブラリの追加
 
@@ -114,7 +121,7 @@ reg-suit init --use-yarn
 
 ![regsuit init 7](/images/3-7.png)
 
-- 次は`screenshots`と入力してエンターを押す
+- 次は`screenshots`と入力してエンターを押します
     - スクリーンショットが保存されているディレクトリを指定しています
 
 ![regsuit init 3](/images/3-3.png)
@@ -125,7 +132,6 @@ reg-suit init --use-yarn
 ![regsuit init 4](/images/3-4.png)
 
 - 次はそのままエンターを押すとブラウザが開きます
-    - この章の初めに作成したGitHubのリポジトリを指定します
 
 ![regsuit init 5](/images/3-5.png)
 
@@ -145,7 +151,7 @@ reg-suit init --use-yarn
 
 ![regsuit init 13](/images/3-13.png)
 
-- 表示されるClientは次の質問の回答なのでコピーしておきます
+- 表示されるClientIDは次の質問の回答なのでコピーしておきます
 
 ![regsuit init 14](/images/3-14.png)
 
@@ -175,7 +181,7 @@ reg-suit init --use-yarn
 - これでRegSuitのセットアップは完了です
 - 設定した内容は`regconfig.json`に記載されています
 
-## 3-4.GitHub Actionの設定
+## 3-5.GitHub Actionの設定
 
 - 今回はGitHub上でプルリクエストを出した時に自動でRegSuitを実行して結果を表示するようにしてみます
     - 自動実行にはGitHub ActionsというCIサービスを使います
@@ -229,7 +235,7 @@ jobs:
 
 ![access key](/images/3-10.png)
 
-## テスト実行
+## 3-6.テスト実行
 
 - CIで回した時にテストが落ちないように一部コメントアウトしておきます
     - `google.test.js`の該当部分をコメントアウトしてください
@@ -277,7 +283,7 @@ git checkout -b dev
 
 - 次に`google.test.js`を修正します
     - 13行目辺りの検索ワードを`puppeteeeer`に変えてみます
-    - **`index.js`ではなくて`google.test.js`なので間違えないように**
+    - `index.js`ではなくて`google.test.js`なので間違えないように
 
 ```js{2}
   test('検索ワードを入力', async () => {
@@ -303,7 +309,7 @@ git push origin dev
 
 ![pull request](/images/3-23.png)
 
-- キャプチャのようにテストが実行中であると表示されます
+- 作成するとキャプチャのようにテストが実行中であると表示されます
 
 ![pull request](/images/3-24.png)
 
@@ -327,7 +333,7 @@ git push origin dev
     - CIではPuppeteerを実行してスクリーンショットを撮る
     - さらにRegSuitによって前回コミット時のスクリーンショットとの差分をテストしてレポートをあげてくれる
 
-## 3-5.まとめ
+## 3-7.まとめ
 
 - RegSuitを使うと画像の差分チェックをテストすることができました
 - 前章までに学んだPuppeteerと組み合わせることでスクリーンショットの差分テストが実現できます
