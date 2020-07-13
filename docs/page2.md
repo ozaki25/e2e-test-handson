@@ -3,9 +3,15 @@
 ## 2-1.Jestとは
 
 - JavaScriptのテストライブラリ
+    - Javaで言うところのJUnitのようなもの
 - [https://jestjs.io/ja/](https://jestjs.io/ja/)
 
-## 2-2.Jestでテストしてみよう
+## 2-2.ゴール
+
+- Jestを使った簡単なテストが書けること
+- Puppeteerと組み合わせってテストが実行できること
+
+## 2-3.Jestでテストしてみよう
 
 - 1章の続きのフォルダで進めていきます
 - まずはPupeteerは置いておいてJest単体で簡単なテストを書いてみます
@@ -114,7 +120,7 @@ describe('calcのテスト', () => {
 });
 ```
 
-## 2-3.JestでPuppeteerをテストしてみよう
+## 2-4.JestでPuppeteerをテストしてみよう
 
 - 1章で学んだPuppeteerを使った自動画面操作とJestを組み合わせてテストしてみます
 
@@ -179,7 +185,7 @@ module.exports = {
 ```
 :::
 
-## 2-4.Google検索のテストを書いてみよう
+## 2-5.Google検索のテストを書いてみよう
 
 - 1章で作成したGoogleでpuppeteerを検索してリポジトリに辿り着くまでに動作をテストしてみます
 
@@ -259,7 +265,7 @@ npx jest google.test.js
 
 ![jest puppeteer result failed](/images/2-5.png)
 
-## 2-5.まとめ
+## 2-6.まとめ
 
 - Jestを使うことでJavaScriptのテストを実行することができました
 - jest-puppeteerを使うとPuppeteerの自動操作と組み合わせてテストすることができました
