@@ -231,7 +231,24 @@ jobs:
 
 ## テスト実行
 
-- まずは現状のコードをGitHubのmasterブランチにアップロードしておきます
+- CIで回した時にテストが落ちないように一部コメントアウトしておきます
+    - `google.test.js`の該当部分をコメントアウトしてください
+
+```js{9}
+  test('検索ボタンを押して結果表示', async () => {
+    await Promise.all([
+      expect(page).toClick('input[name="btnK"]'),
+      page.waitForNavigation(),
+    ]);
+    // id=searchの要素が画面にあることをチェック
+    await expect(page).toMatchElement('#search');
+    // id=result-statsの要素に`約 5,750,000 件`と表示されていることをチェック(件数はテストが通るように書き換えてください)
+    // await expect(page).toMatchElement('#result-stats', { text: '約 5,750,000 件' });
+    await page.screenshot({ path: 'screenshots/3.png', fullPage: true });
+  });
+```
+
+- 現状のコードをGitHubのmasterブランチにアップロードしておきます
 - 以下のコマンドを順番に実行してください
 
 ```sh
