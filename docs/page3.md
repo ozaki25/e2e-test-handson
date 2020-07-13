@@ -1,10 +1,16 @@
 # 3.RegSuitで画像回帰テスト
 
-## RegSuitとは
+## 3-1.RegSuitとは
 
-- キャプチャ載せる
+- RegSuitとは画像を比較し差分があるかどうか検知できるテストライブラリです
+    - [https://reg-viz.github.io/reg-suit/](https://reg-viz.github.io/reg-suit/)
+- 画面のスクリーンショットを撮影し改修前後で差分があるかどうかテストするといった用途で使われます
+    - 差分があった場合はその差分が意図したものかチェックし問題なければパスさせます
+- 差分のチェック機能が多様なのが特徴です
+    - 公式のサンプル
+    - [https://reg-publish-bucket-2c260973-434b-4cc9-8e17-a14e72fd062c.s3.amazonaws.com/2e580ac6f2e686dd97dd4d9d60347a47e03003e2/index.html](https://reg-publish-bucket-2c260973-434b-4cc9-8e17-a14e72fd062c.s3.amazonaws.com/2e580ac6f2e686dd97dd4d9d60347a47e03003e2/index.html)
 
-## 事前準備
+## 3-2.事前準備
 
 ### Github
 
@@ -72,7 +78,7 @@ export AWS_SECRET_ACCESS_KEY=シークレットアクセスキー
 - このコマンドはターミナルを閉じるとリセットされてしまうので、ターミナルを開き直した場合は再度実行してください
 :::
 
-## RegSuitの導入
+## 3-3.RegSuitの導入
 
 ### ライブラリの追加
 
@@ -167,8 +173,9 @@ reg-suit init --use-yarn
 ![regsuit init 19](/images/3-19.png)
 
 - これでRegSuitのセットアップは完了です
+- 設定した内容は`regconfig.json`に記載されています
 
-## CIの設定追加
+## 3-4.GitHub Actionの設定
 
 - 今回はGitHub上でプルリクエストを出した時に自動でRegSuitを実行して結果を表示するようにしてみます
     - 自動実行にはGitHub ActionsというCIサービスを使います
@@ -222,7 +229,89 @@ jobs:
 
 ![access key](/images/3-10.png)
 
-## GitHubにプッシュ
+## テスト実行
 
-- masterにプッシュしておいて、devにプッシュしてプルリク作成
+- まずは現状のコードをGitHubのmasterブランチにアップロードしておきます
+- 以下のコマンドを順番に実行してください
 
+```sh
+git add .
+git commit -m "reg suit"
+git push origin master
+```
+
+- GitHubのリポジトリのページを開いてGitHub Actionsによってテストが実行されたことを確認してみましょう
+- リポジトリのページを開いて`Actions`タブから最新の実行結果を選択しましょう
+
+![github actions](/images/3-20.png)
+
+- テストの実行ログを確認することができます
+- reg suitのログを見ると新しいキャプチャが4枚登録されたことが確認できました
+
+![github actions](/images/3-21.png)
+
+- 続いてdevブランチを作成してキャプチャに差分を作り出してテストを落としてみましょう
+    - 本来であればテスト対象のページを書き換えたい所ですが、今回サンプルで使っているGoogleのページを修正する訳にもいかないのでテストコードを変えることで差分を生み出します
+- まずはdevブランチを作成します
+
+```sh
+git checkout -b dev
+```
+
+- 次に`google.test.js`を修正します
+    - 13行目辺りの検索ワードを`puppeteeeer`に変えてみます
+    - **`index.js`ではなくて`google.test.js`なので間違えないように**
+
+```js{2}
+  test('検索ワードを入力', async () => {
+    await expect(page).toFill('input[name="q"]', 'puppeteeeer');
+    await page.screenshot({ path: '2.png', fullPage: true });
+  });
+```
+
+- 修正したらcommitしてpushします
+
+```sh
+git add google.test.js
+git commit -m "update test"
+git push origin dev
+```
+
+- pushできたらリポジトリのWebページに戻ってPullRequestを作成します
+    - `Pull requests`タブから`Compare & pull request`を選択します
+
+![pull request](/images/3-22.png)
+
+- `Create pull request`ボタンを押してPullRequestを作成します
+
+![pull request](/images/3-23.png)
+
+- キャプチャのようにテストが実行中であると表示されます
+
+![pull request](/images/3-24.png)
+
+- 実行が完了するとRegSuitのボットが結果を投稿してくれます
+    - 赤丸3つと青丸1つは、キャプチャ4枚のうち3枚が差分あり1枚が差分なしであることを表現している
+- `this report`をクリックすると実行結果の詳細が閲覧できます
+
+![pull request](/images/3-25.png)
+
+- RegSuitの実行結果画面です
+
+![reg-suit](/images/3-26.png)
+
+- 画像を選択するといろいろなパターンで差分を確認することができます
+
+![reg-suit](/images/3-27.png)
+![reg-suit](/images/3-28.png)
+
+- ここまでで以下の仕掛けが完成しました
+    - プルリクエストを出すとGitHub ActionsによってCIがスタートする
+    - CIではPuppeteerを実行してスクリーンショットを撮る
+    - さらにRegSuitによって前回コミット時のスクリーンショットとの差分をテストしてレポートをあげてくれる
+
+## 3-5.まとめ
+
+- RegSuitを使うと画像の差分チェックをテストすることができました
+- 前章までに学んだPuppeteerと組み合わせることでスクリーンショットの差分テストが実現できます
+- GitHub ActionsなどのCIと組み合わせることでより強力に機能します
