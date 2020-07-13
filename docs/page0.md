@@ -29,6 +29,18 @@ yarn -v
 npm i -g yarn
 ```
 
+## gitが入っていること
+
+- 以下のコマンドでバージョンが表示されること
+
+```sh
+git --version
+```
+
+- 入っていなければダウンロードしてください
+    - [https://git-scm.com/download](https://git-scm.com/download)
+
+
 ## VSCodeが入っていること
 
 - お気に入りのエディタがある人はそれで大丈夫です
