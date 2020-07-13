@@ -3,10 +3,15 @@
 ## 1-1.Puppeteerとは
 
 - Chromeを自動操作できるJavaScriptのライブラリ
+- Puppeteerを使うことでユーザが実際にWebページを操作するのと同じ動作を再現することができます
 - 公式サイト
     - [https://pptr.dev/](https://pptr.dev/)
 
-## 1-2.セットアップ
+## 1-2.ゴール
+
+- Puppeteerを使ってブラウザを操作しGoogle検索を実行できること
+
+## 1-3.セットアップ
 
 - サンプルプロジェクトのフォルダを作成する
 
@@ -23,7 +28,7 @@ yarn init -y
 yarn add puppeteer
 ```
 
-## 1-3.Puppeteerでページにアクセスしてみよう
+## 1-4.Puppeteerでページにアクセスしてみよう
 
 - Puppeteerを使ってブラウザを自動操作し[https://example.com](https://example.com)にアクセスしてみます
 - プロジェクト直下(`puppeteer-sample`フォルダ内)に`index.js`というファイルを作成して以下の内容を記述してください
@@ -66,7 +71,7 @@ node index.js
 
 - URLを変更すれば別のページにもアクセスできるので試してみましょう
 
-## 1-4.Puppeteerでページを操作してみよう
+## 1-5.Puppeteerでページを操作してみよう
 
 - ページを表示することができるようになったので次はページを操作してみます
 - [http://google.com/](http://google.com/)にアクセスして`puppeteer`を検索して[Puppeteerのリポジトリ](https://github.com/puppeteer/puppeteer)にアクセスしてみます
@@ -255,12 +260,12 @@ const puppeteer = require('puppeteer');
 
 ![screenshot](/images/1-4.png)
 
-## 1-5.まとめ
+## 1-6.まとめ
 
 - Puppeteerを使ってブラウザを自動操作しWebページにアクセスしました
 - 文字の入力やボタンのクリックといった操作も実行できました
 - 任意のタイミングでスクリーンショットを保存することができました
 
-## 1-6.参考情報
+## 1-7.参考情報
 
 - ここで紹介した以外にもいろいなことができるので[公式サイト](https://pptr.dev/)や[公式が提供するサンプル](https://try-puppeteer.appspot.com/)を参考にしてみてください
