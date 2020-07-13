@@ -7,7 +7,7 @@ module.exports = {
     repo: 'ozaki25/e2e-test-handson',
     repoLabel: 'GitHub',
     smoothScroll: true,
-    sidebar: ['/page0', '/page1', '/page2', '/page3'],
+    sidebar: ['/page0', '/page1', '/page2', '/page3', '/page4'],
   },
   markdown: {
     lineNumbers: true,
