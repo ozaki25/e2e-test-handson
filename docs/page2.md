@@ -219,8 +219,8 @@ describe('Googleでpuppeteerを検索してリポジトリにアクセスする'
     ]);
     // id=searchの要素が画面にあることをチェック
     await expect(page).toMatchElement('#search');
-    // id=result-statsの要素に`約 5,750,000 件`と表示されていることをチェック(件数はテストが通るように書き換えてください)
-    await expect(page).toMatchElement('#result-stats', { text: '約 5,750,000 件' });
+    // id=result-statsの要素に`約 5,880,000 件`と表示されていることをチェック(件数はテストが通るように書き換えてください)
+    await expect(page).toMatchElement('#result-stats', { text: '約 5,880,000 件' });
     await page.screenshot({ path: 'screenshots/3.png', fullPage: true });
   });
 
