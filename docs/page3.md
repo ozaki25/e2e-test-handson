@@ -343,3 +343,6 @@ git push origin dev
 
 - [React](https://ja.reactjs.org/)や[Vue](https://jp.vuejs.org/index.html)といったSPAライブラリを使う場合は[Storybook](https://storybook.js.org/)と組み合わせてRegSuitを使うケースが多いです
     - Storybookを使うことでコンポーネント単位でスクリーンショットを撮影してテストします
+- 参考記事
+    - [FOLIOの画像回帰テストの裏側. これは FOLIO アドベントカレンダー2018 の23日目の記事です。 | by Yosuke Kurami | Medium](https://medium.com/@Quramy/folio%E3%81%AE%E7%94%BB%E5%83%8F%E5%9B%9E%E5%B8%B0%E3%83%86%E3%82%B9%E3%83%88%E3%81%AE%E8%A3%8F%E5%81%B4-c848030991bc)
+    - [Storybookとreg-suitで気軽にはじめるVisual Regression Testing - wadackel.me](https://blog.wadackel.me/2018/storybook-chrome-screenshot-with-reg-viz/)
