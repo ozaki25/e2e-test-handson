@@ -65,7 +65,6 @@ git push origin master
 
 #### アクセスキーの発行
 
-- ※7/14のハンズオン参加者は発行済のキーを展開します
 - AWSのアカウントを作成し以下の手順に従ってアクセスキーを発行してください
     - [https://qiita.com/ozaki25/items/034f7f8e8ad69adceea7](https://qiita.com/ozaki25/items/034f7f8e8ad69adceea7)
 
